@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Xadoto - Configuración</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #111 0%, #0f0 100%);
+      font-family: 'Orbitron', Arial, sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      transition: background .4s, color .4s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    body.light {
+      background: linear-gradient(135deg, #dfffe8 0%, #b2fff6 100%);
+      color: #222;
+    }
+    .config-card {
+      background: linear-gradient(135deg, #191919, #00ff8850 100%);
+      color: #fff;
+      border-radius: 22px;
+      box-shadow: 0 0 60px #00ff8866, 0 0 14px #00ff8822;
+      min-width: 320px;
+      max-width: 98vw;
+      margin: 80px 0 0 0;
+      padding: 36px 34px 32px 34px;
+      position: relative;
+      animation: fadeInUp .45s cubic-bezier(.39,.575,.565,1.000);
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(100px) scale(0.9);}
+      100% { opacity: 1; transform: translateY(0) scale(1);}
+    }
+    .config-card h2 {
+      margin: 0 0 16px 0;
+      font-size: 1.38rem;
+      color: #00ff88;
+      text-shadow: 0 0 10px #00ff8899;
+      font-family: 'Orbitron',Arial,sans-serif;
+    }
+    .config-card label {
+      color: #b6ffdc;
+      font-size: 1.05rem;
+      margin-bottom: 2px;
+      margin-top: 12px;
+      display: block;
+      letter-spacing: 1.1px;
+    }
+    .config-card .theme-group {
+      margin-bottom: 22px;
+    }
+    .config-card .theme-option {
+      margin-right: 17px;
+      display: inline-flex;
+      align-items: center;
+      font-size: 1.06rem;
+      cursor: pointer;
+    }
+    .config-card .theme-option input[type="radio"] {
+      margin-right: 6px;
+      accent-color: #00ff88;
+      width: 1.1em; height: 1.1em;
+    }
+    .config-card .info {
+      font-size: .98rem;
+      color: #b6ffdc;
+      margin-top: 6px;
+      margin-bottom: 18px;
+      letter-spacing: .6px;
+      background: #111a;
+      border-radius: 7px;
+      padding: 3px 14px;
+      display: inline-block;
+    }
+    .config-card .back-btn {
+      position: absolute;
+      left: 19px; top: 19px;
+      background: #00ff88;
+      color: #101010;
+      font-size: 1.09rem;
+      border: none;
+      border-radius: 10px;
+      padding: 2px 12px 1px 12px;
+      cursor: pointer;
+      font-family: 'Orbitron',Arial,sans-serif;
+      box-shadow: 0 0 8px #00ff88bb;
+      transition: background .2s, color .2s;
+    }
+    .config-card .back-btn:hover {
+      background: #101010;
+      color: #00ff88;
+    }
+    .config-card .divider {
+      margin: 22px 0 10px 0;
+      border: 0;
+      border-top: 1.7px solid #00ff8833;
+      width: 100%;
+    }
+    .config-card input[type="email"], .config-card input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      background: #1d1d1d;
+      border: 2px solid #00ff8855;
+      border-radius: 8px;
+      color: #fff;
+      margin-bottom: 10px;
+      font-size: 1.07rem;
+      transition: border .2s, box-shadow .2s;
+      outline: none;
+    }
+    body.light .config-card input[type="email"], body.light .config-card input[type="password"] {
+      background: #f0fff1;
+      color: #222;
+      border: 2px solid #00bb8855;
+    }
+    .config-card .pass-btn {
+      background: linear-gradient(90deg, #23272a 60%, #00ff88 100%);
+      color: #fff;
+      font-size: 1.09rem;
+      font-weight: bold;
+      padding: 10px 0;
+      border: none;
+      border-radius: 12px;
+      margin-top: 4px;
+      width: 100%;
+      cursor: pointer;
+      box-shadow: 0 0 8px #00ff8866;
+      letter-spacing: 1px;
+      transition: box-shadow 0.3s, background 0.3s, transform .1s;
+      outline: none;
+    }
+    .config-card .pass-btn:hover {
+      background: linear-gradient(90deg, #00ff88 60%, #23272a 100%);
+      box-shadow: 0 0 18px #00ff88cc, 0 0 10px #00ff8844;
+      transform: scale(1.03);
+    }
+    .config-card .success-msg, .config-card .error-msg {
+      font-size: 1.01rem;
+      margin-top: 8px;
+      margin-bottom: 2px;
+      background: #191919dd;
+      border-radius: 8px;
+      width: 100%;
+      text-align: center;
+      padding: 7px 2px 7px 2px;
+      box-shadow: 0 0 10px #00ff8844;
+      letter-spacing: .5px;
+    }
+    .config-card .success-msg {
+      color: #00ff88;
+      background: #111a;
+      box-shadow: 0 0 10px #00ff88aa;
+    }
+    .config-card .error-msg {
+      color: #ff7070;
+      box-shadow: 0 0 10px #ff707066;
+    }
+    @media (max-width: 650px) {
+      .config-card { min-width: 96vw; padding: 14px 2vw 26px 2vw;}
+      .config-card h2 { font-size: 1.09rem;}
+    }
+  </style>
+</head>
+<body>
+  <div class="config-card">
+    <button class="back-btn" id="back-btn">&larr; Panel</button>
+    <h2>Configuración</h2>
+    <div class="info">La configuración solo se aplica a este navegador</div>
+    <label>Aspecto</label>
+    <div class="theme-group" id="theme-group">
+      <label class="theme-option">
+        <input type="radio" name="theme" value="auto"> Usar tema del dispositivo
+      </label>
+      <label class="theme-option">
+        <input type="radio" name="theme" value="dark"> Tema oscuro
+      </label>
+      <label class="theme-option">
+        <input type="radio" name="theme" value="light"> Tema claro
+      </label>
+    </div>
+    <hr class="divider">
+    <label for="change-gmail">Cambiar contraseña</label>
+    <input type="email" id="change-gmail" placeholder="Tu Gmail registrado">
+    <input type="password" id="change-password" placeholder="Nueva contraseña">
+    <button class="pass-btn" id="change-pass-btn">Cambiar contraseña</button>
+    <div class="success-msg" id="pass-success" style="display:none"></div>
+    <div class="error-msg" id="pass-error" style="display:none"></div>
+  </div>
+  <script>
+    // Volver al panel
+    document.getElementById('back-btn').onclick = function() {
+      window.location.href = "dashboard.html";
+    };
+
+    // Tema: auto/dark/light
+    function applyTheme(theme) {
+      if(theme === "auto"){
+        const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.body.classList.toggle("light", !prefersDark);
+      } else if(theme === "dark"){
+        document.body.classList.remove("light");
+      } else if(theme === "light"){
+        document.body.classList.add("light");
+      }
+    }
+    // Al cargar
+    (function(){
+      let storedTheme = localStorage.getItem('xadoto-theme') || 'auto';
+      applyTheme(storedTheme);
+      // Escuchar cambios de SO si es auto
+      if(storedTheme === "auto"){
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e=>{
+          applyTheme("auto");
+        });
+      }
+      // Reflejar radio
+      let radios = document.querySelectorAll('input[name="theme"]');
+      radios.forEach(r => r.checked = (r.value === storedTheme));
+    })();
+    // Cambiar tema desde el modal
+    document.getElementById('theme-group').addEventListener('change', function(e){
+      if(e.target.name === "theme"){
+        localStorage.setItem('xadoto-theme', e.target.value);
+        applyTheme(e.target.value);
+      }
+    });
+
+    // Cambiar contraseña
+    document.getElementById('change-pass-btn').onclick = function() {
+      const gmail = document.getElementById('change-gmail').value.trim();
+      const pass = document.getElementById('change-password').value;
+      const success = document.getElementById('pass-success');
+      const error = document.getElementById('pass-error');
+      success.style.display = "none";
+      error.style.display = "none";
+      if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(gmail)) {
+        error.textContent = "Introduce un Gmail válido";
+        error.style.display = "block";
+        return;
+      }
+      if (pass.length < 6) {
+        error.textContent = "La contraseña debe tener al menos 6 caracteres";
+        error.style.display = "block";
+        return;
+      }
+      // Buscar usuario en localStorage
+      let users = JSON.parse(localStorage.getItem('users') || "[]");
+      let idx = users.findIndex(u=>u.gmail===gmail);
+      if(idx === -1){
+        error.textContent = "No existe una cuenta con ese Gmail";
+        error.style.display = "block";
+        return;
+      }
+      users[idx].password = pass;
+      localStorage.setItem('users', JSON.stringify(users));
+      // Si es el usuario logueado, actualizarlo también
+      let loggedUser = JSON.parse(localStorage.getItem('loggedUser') || "null");
+      if(loggedUser && loggedUser.gmail === gmail){
+        loggedUser.password = pass;
+        localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
+      }
+      success.textContent = "Contraseña cambiada correctamente";
+      success.style.display = "block";
+      error.style.display = "none";
+      document.getElementById('change-gmail').value = "";
+      document.getElementById('change-password').value = "";
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Verde Seguro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Fuente moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #111 0%, #0f0 100%);
+      min-height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Orbitron', Arial, sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .latam-flags-bar {
+      width: 100vw;
+      background: linear-gradient(90deg, #111 50%, #00ff88 100%);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 0 8px 0;
+      z-index: 10;
+      box-shadow: 0 3px 16px #00ff8844;
+      position: fixed;
+      top: 0; left: 0;
+      font-size: 1rem;
+      font-family: inherit;
+      letter-spacing: 1px;
+      border-bottom: 2px solid #00ff88bb;
+    }
+    .country-block {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(30, 40, 30, 0.92);
+      border-radius: 13px;
+      padding: 7px 12px 7px 8px;
+      margin: 0 0 4px 0;
+      box-shadow: 0 0 8px #00ff8833;
+      min-width: 125px;
+      transition: background .2s;
+    }
+    .country-block:hover {
+      background: #00ff8822;
+    }
+    .flag {
+      width: 30px;
+      height: 20px;
+      border-radius: 4px;
+      box-shadow: 0 0 5px #00ff8844;
+      object-fit: cover;
+      border: 1.3px solid #0f0;
+      background: #fff;
+    }
+    .country-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1.08;
+    }
+    .country-name {
+      font-size: .96rem;
+      color: #0f0;
+      font-weight: bold;
+    }
+    .country-time {
+      font-size: .93rem;
+      color: #fff;
+      margin-top: -1px;
+      font-family: monospace;
+    }
+    @media (max-width: 1000px) {
+      .latam-flags-bar { font-size: 0.95rem; }
+      .country-block { min-width: 95px; }
+    }
+    @media (max-width: 650px) {
+      .latam-flags-bar { font-size: 0.80rem; gap: 7px; padding: 7px 0 4px 0;}
+      .flag { width: 20px; height: 14px; }
+      .country-block { min-width: 55px; padding: 4px 5px 4px 4px;}
+    }
+    .animated-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, #00ff88aa 0%, #0000 70%);
+      animation: float 12s infinite alternate ease-in-out;
+      pointer-events: none;
+    }
+    .circle1 { width: 440px; height: 440px; top: 5%; left: 8%; animation-delay: 0s;}
+    .circle2 { width: 280px; height: 280px; bottom: 10%; right: 12%; animation-delay: 2.8s;}
+    .circle3 { width: 560px; height: 560px; top: 58%; left: 56%; animation-delay: 1.2s;}
+    .circle4 { width: 280px; height: 280px; bottom: 20%; left: 36%; animation-delay: 4.5s;}
+    @keyframes float {
+      0% { transform: scale(1) translateY(0);}
+      100% { transform: scale(1.15) translateY(60px);}
+    }
+    .login-container {
+      background: rgba(15, 20, 15, 0.98);
+      border: 3px solid #00ff88;
+      border-radius: 26px;
+      box-shadow: 0 0 60px #00ff8866, 0 0 14px #00ff8822;
+      padding: 50px 36px 40px 36px;
+      min-width: 350px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1;
+      animation: fadeInUp 1.2s cubic-bezier(.39,.575,.565,1.000) both;
+      position: relative;
+      margin-top: 90px;
+    }
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(100px) scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .titulo {
+      font-size: 2.1rem;
+      letter-spacing: 3px;
+      margin-bottom: 32px;
+      color: #00ff88;
+      text-shadow: 0 0 10px #00ff8899, 0 0 20px #00ff8844;
+      font-family: 'Orbitron', Arial, sans-serif;
+      text-align: center;
+    }
+    label {
+      color: #b6ffdc;
+      font-size: 1.08rem;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+      margin-top: 16px;
+      align-self: flex-start;
+    }
+    input[type="text"], input[type="password"], input[type="email"] {
+      width: 100%;
+      padding: 13px 15px;
+      background: #1d1d1d;
+      border: 2px solid #00ff8855;
+      border-radius: 11px;
+      color: #fff;
+      margin-bottom: 6px;
+      font-size: 1.1rem;
+      transition: border .2s, box-shadow .2s;
+    }
+    input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+      outline: none;
+      border: 2.5px solid #00ffb2;
+      box-shadow: 0 0 12px #00ff88bb;
+    }
+    .main-btn, .register-btn {
+      background: linear-gradient(90deg, #23272a 60%, #00ff88 100%);
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: bold;
+      padding: 14px 0;
+      border: none;
+      border-radius: 12px;
+      margin-top: 22px;
+      margin-bottom: 6px;
+      width: 100%;
+      cursor: pointer;
+      box-shadow: 0 0 18px #00ff8866;
+      letter-spacing: 1.5px;
+      transition: box-shadow 0.3s, background 0.3s, transform .1s;
+      outline: none;
+      animation: btnGlow 1.5s infinite alternate;
+    }
+    .main-btn:hover, .register-btn:hover {
+      background: linear-gradient(90deg, #00ff88 60%, #23272a 100%);
+      box-shadow: 0 0 30px #00ff88cc, 0 0 10px #00ff8844;
+      transform: scale(1.06);
+    }
+    @keyframes btnGlow {
+      from {
+        box-shadow: 0 0 13px #00ff8899, 0 0 24px #00ff8844;
+      }
+      to {
+        box-shadow: 0 0 24px #00ff88bb, 0 0 40px #00ff8844;
+      }
+    }
+    .register-link, .login-link {
+      color: #00ff88;
+      margin-top: 10px;
+      text-align: center;
+      width: 100%;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 1.07rem;
+      letter-spacing: .5px;
+    }
+    .register-link:hover, .login-link:hover {
+      color: #fff;
+      text-shadow: 0 0 8px #00ff88aa;
+    }
+    .avatar-preview {
+      display: flex;
+      align-items: center;
+      margin-top: 6px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+    .avatar-img {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #00ff88aa;
+      box-shadow: 0 0 10px #00ff88aa;
+      margin-right: 12px;
+      background: #191919;
+    }
+    .avatar-label {
+      color: #b6ffdc;
+      font-size: 1.08rem;
+      margin-bottom: 4px;
+      margin-top: 16px;
+      align-self: flex-start;
+      display: block;
+    }
+    .error-msg {
+      color: #ff7070;
+      background: #191919dd;
+      padding: 8px 0 7px 0;
+      margin: 10px 0 0 0;
+      border-radius: 8px;
+      width: 100%;
+      text-align: center;
+      font-size: 1rem;
+      display: none;
+      box-shadow: 0 0 10px #ff707066;
+      letter-spacing: .5px;
+    }
+    .user-panel {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(15, 20, 15, 0.98);
+      border: 3px solid #00ff88;
+      border-radius: 26px;
+      box-shadow: 0 0 60px #00ff8866, 0 0 14px #00ff8822;
+      padding: 48px 36px 36px 36px;
+      min-width: 320px;
+      margin-top: 40px;
+      z-index: 2;
+      animation: fadeInUp 1.2s cubic-bezier(.39,.575,.565,1.000) both;
+      position: relative;
+    }
+    .user-panel .user-avatar {
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      border: 4px solid #00ff88aa;
+      object-fit: cover;
+      box-shadow: 0 0 22px #00ff88cc;
+      margin-bottom: 18px;
+      background: #181818;
+    }
+    .user-panel .user-name {
+      font-size: 1.45rem;
+      color: #00ff88;
+      margin-bottom: 10px;
+      text-shadow: 0 0 6px #00ff8899;
+      font-family: 'Orbitron', Arial, sans-serif;
+    }
+    .user-panel .user-gmail {
+      font-size: 1.09rem;
+      color: #b6ffdc;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+      word-break: break-all;
+    }
+    .logout-btn {
+      background: transparent;
+      border: 2px solid #00ff88;
+      color: #00ff88;
+      border-radius: 10px;
+      padding: 10px 26px;
+      font-size: 1.08rem;
+      font-family: 'Orbitron', Arial, sans-serif;
+      cursor: pointer;
+      transition: background .2s, color .2s, box-shadow .2s;
+      box-shadow: 0 0 12px #00ff8844;
+    }
+    .logout-btn:hover {
+      background: #00ff88;
+      color: #191919;
+      box-shadow: 0 0 18px #00ff88cc;
+    }
+    @media (max-width: 650px) {
+      .login-container, .user-panel {
+        min-width: 90vw;
+        padding: 30px 8vw 30px 8vw;
+      }
+      .login-container { margin-top: 120px; }
+      .titulo {
+        font-size: 1.2rem;
+      }
+      .avatar-img, .user-panel .user-avatar { width: 40px; height: 40px;}
+    }
+  </style>
+</head>
+<body>
+  <!-- BARRA DE BANDERAS LATAM -->
+  <div class="latam-flags-bar" id="latam-flags-bar">
+    <!-- Bandera, nombre y hora: se llenan por JS -->
+  </div>
+  <div class="animated-bg">
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle circle3"></div>
+    <div class="circle circle4"></div>
+  </div>
+  <!-- LOGIN FORM -->
+  <div class="login-container" id="login-container">
+    <div class="titulo">Login</div>
+    <form id="login-form" autocomplete="off">
+      <label for="login-username">Usuario</label>
+      <input type="text" id="login-username" name="username" required autocomplete="username" placeholder="Nombre de usuario">
+      <label for="login-password">Contraseña</label>
+      <input type="password" id="login-password" name="password" required autocomplete="current-password" placeholder="Contraseña">
+      <div class="error-msg" id="login-error"></div>
+      <button type="submit" class="main-btn">Iniciar sesión</button>
+    </form>
+    <div class="register-link" id="show-register">¿No tienes cuenta? Regístrate</div>
+  </div>
+  <!-- REGISTER FORM -->
+  <div class="login-container" id="register-container" style="display:none">
+    <div class="titulo">Registro</div>
+    <form id="register-form" autocomplete="off" enctype="multipart/form-data">
+      <label for="register-username">Nombre de usuario</label>
+      <input type="text" id="register-username" name="register-username" required placeholder="Tu usuario único">
+      <label for="register-gmail">Gmail</label>
+      <input type="email" id="register-gmail" name="register-gmail" required placeholder="ejemplo@gmail.com" pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$" title="Solo se permite Gmail">
+      <label for="register-password">Contraseña</label>
+      <input type="password" id="register-password" name="register-password" required placeholder="Crea una contraseña">
+      <span class="avatar-label">Foto de avatar</span>
+      <div class="avatar-preview">
+        <img src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=User" id="avatar-img" class="avatar-img" alt="avatar">
+        <input type="file" id="register-avatar" accept="image/*" style="width:60%;">
+      </div>
+      <div class="error-msg" id="register-error"></div>
+      <button type="submit" class="register-btn">Registrar</button>
+    </form>
+    <div class="login-link" id="show-login">¿Ya tienes cuenta? Inicia sesión</div>
+  </div>
+  <!-- PANEL DE USUARIO -->
+  <div class="user-panel" id="user-panel">
+    <img src="" alt="Avatar" class="user-avatar" id="user-avatar">
+    <div class="user-name" id="user-name"></div>
+    <div class="user-gmail" id="user-gmail"></div>
+    <button class="logout-btn" id="logout-btn">Cerrar sesión</button>
+  </div>
+  <script>
+    // FLAGS & TIMEZONES LATAM
+    // timezones: https://en.wikipedia.org/wiki/List_of_time_zones_by_country
+    const latamCountries = [
+      { code: "ar", name: "Argentina", tz: "America/Argentina/Buenos_Aires", flag: "https://flagcdn.com/ar.svg" },
+      { code: "bo", name: "Bolivia", tz: "America/La_Paz", flag: "https://flagcdn.com/bo.svg" },
+      { code: "br", name: "Brasil", tz: "America/Sao_Paulo", flag: "https://flagcdn.com/br.svg" },
+      { code: "cl", name: "Chile", tz: "America/Santiago", flag: "https://flagcdn.com/cl.svg" },
+      { code: "co", name: "Colombia", tz: "America/Bogota", flag: "https://flagcdn.com/co.svg" },
+      { code: "cr", name: "Costa Rica", tz: "America/Costa_Rica", flag: "https://flagcdn.com/cr.svg" },
+      { code: "cu", name: "Cuba", tz: "America/Havana", flag: "https://flagcdn.com/cu.svg" },
+      { code: "do", name: "R. Dominicana", tz: "America/Santo_Domingo", flag: "https://flagcdn.com/do.svg" },
+      { code: "ec", name: "Ecuador", tz: "America/Guayaquil", flag: "https://flagcdn.com/ec.svg" },
+      { code: "sv", name: "El Salvador", tz: "America/El_Salvador", flag: "https://flagcdn.com/sv.svg" },
+      { code: "gt", name: "Guatemala", tz: "America/Guatemala", flag: "https://flagcdn.com/gt.svg" },
+      { code: "hn", name: "Honduras", tz: "America/Tegucigalpa", flag: "https://flagcdn.com/hn.svg" },
+      { code: "mx", name: "México", tz: "America/Mexico_City", flag: "https://flagcdn.com/mx.svg" },
+      { code: "ni", name: "Nicaragua", tz: "America/Managua", flag: "https://flagcdn.com/ni.svg" },
+      { code: "pa", name: "Panamá", tz: "America/Panama", flag: "https://flagcdn.com/pa.svg" },
+      { code: "py", name: "Paraguay", tz: "America/Asuncion", flag: "https://flagcdn.com/py.svg" },
+      { code: "pe", name: "Perú", tz: "America/Lima", flag: "https://flagcdn.com/pe.svg" },
+      { code: "pr", name: "Puerto Rico", tz: "America/Puerto_Rico", flag: "https://flagcdn.com/pr.svg" },
+      { code: "uy", name: "Uruguay", tz: "America/Montevideo", flag: "https://flagcdn.com/uy.svg" },
+      { code: "ve", name: "Venezuela", tz: "America/Caracas", flag: "https://flagcdn.com/ve.svg" }
+    ];
+    function updateFlagsBar() {
+      const bar = document.getElementById('latam-flags-bar');
+      bar.innerHTML = ""; // limpia
+      latamCountries.forEach((c, idx) => {
+        const now = new Date();
+        const time = now.toLocaleTimeString('es-ES', {
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: c.tz,
+          hour12: false
+        });
+        const block = document.createElement('div');
+        block.className = 'country-block';
+        block.innerHTML = `
+          <img src="${c.flag}" alt="${c.name}" class="flag">
+          <div class="country-info">
+            <span class="country-name">${c.name}</span>
+            <span class="country-time" id="ctz-${idx}">${time}</span>
+          </div>
+        `;
+        bar.appendChild(block);
+      });
+    }
+    // Actualiza la hora cada 30s
+    updateFlagsBar();
+    setInterval(updateFlagsBar, 30000);
+
+    // Guardar y obtener usuarios desde localStorage
+    function saveUser(user) {
+      let users = JSON.parse(localStorage.getItem('users') || "[]");
+      users.push(user);
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+    function getUser(username, password) {
+      let users = JSON.parse(localStorage.getItem('users') || "[]");
+      return users.find(u => u.username === username && u.password === password);
+    }
+    function getUserByUsername(username) {
+      let users = JSON.parse(localStorage.getItem('users') || "[]");
+      return users.find(u => u.username === username);
+    }
+
+    // Cambiar entre login y registro
+    document.getElementById('show-register').onclick = () => {
+      document.getElementById('login-container').style.display = 'none';
+      document.getElementById('register-container').style.display = 'flex';
+    };
+    document.getElementById('show-login').onclick = () => {
+      document.getElementById('register-container').style.display = 'none';
+      document.getElementById('login-container').style.display = 'flex';
+    };
+
+    // Avatar preview para registro
+    let avatarDataUrl = "";
+    document.getElementById('register-avatar').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          document.getElementById('avatar-img').src = evt.target.result;
+          avatarDataUrl = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        document.getElementById('avatar-img').src = "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=User";
+        avatarDataUrl = "";
+      }
+    });
+
+    // Validación de solo Gmail y registro
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const gmail = document.getElementById('register-gmail').value.trim();
+      const username = document.getElementById('register-username').value.trim();
+      const password = document.getElementById('register-password').value;
+      const error = document.getElementById('register-error');
+      error.style.display = "none";
+
+      // Solo permite correos @gmail.com
+      if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(gmail)) {
+        error.textContent = "Solo se permite correo de Gmail";
+        error.style.display = "block";
+        return;
+      }
+      if (username.length < 3) {
+        error.textContent = "El usuario debe tener al menos 3 caracteres";
+        error.style.display = "block";
+        return;
+      }
+      if (password.length < 6) {
+        error.textContent = "La contraseña debe tener al menos 6 caracteres";
+        error.style.display = "block";
+        return;
+      }
+      if(getUserByUsername(username)) {
+        error.textContent = "Ese usuario ya existe";
+        error.style.display = "block";
+        return;
+      }
+      // Si no hay avatar subido, usa el avatar por defecto
+      const avatarFinal = avatarDataUrl || "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=" + encodeURIComponent(username);
+
+      // Guarda usuario en localStorage
+      saveUser({
+        username: username,
+        gmail: gmail,
+        password: password,
+        avatar: avatarFinal
+      });
+
+      error.style.display = "none";
+      alert("¡Registro exitoso!\nUsuario: " + username + "\nCorreo: " + gmail);
+
+      // Limpiar formulario
+      document.getElementById('register-form').reset();
+      document.getElementById('avatar-img').src = "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=User";
+      avatarDataUrl = "";
+
+      // Cambiar a login
+      document.getElementById('register-container').style.display = 'none';
+      document.getElementById('login-container').style.display = 'flex';
+    });
+
+    // Validación de login
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('login-username').value.trim();
+      const password = document.getElementById('login-password').value;
+      const error = document.getElementById('login-error');
+      error.style.display = "none";
+      if (!username || !password) {
+        error.textContent = "Completa ambos campos";
+        error.style.display = "block";
+        return;
+      }
+      const user = getUser(username, password);
+      if (!user) {
+        error.textContent = "Usuario o contraseña incorrectos";
+        error.style.display = "block";
+        return;
+      }
+      // Mostrar panel de usuario
+      mostrarPanelUsuario(user);
+      // Limpiar formulario
+      document.getElementById('login-form').reset();
+    });
+
+    // Mostrar panel de usuario logueado
+    function mostrarPanelUsuario(user) {
+      document.getElementById('login-container').style.display = 'none';
+      document.getElementById('register-container').style.display = 'none';
+      document.getElementById('user-avatar').src = user.avatar;
+      document.getElementById('user-name').textContent = user.username;
+      document.getElementById('user-gmail').textContent = user.gmail;
+      document.getElementById('user-panel').style.display = 'flex';
+    }
+
+    // Cerrar sesión
+    document.getElementById('logout-btn').onclick = function() {
+      document.getElementById('user-panel').style.display = 'none';
+      document.getElementById('login-container').style.display = 'flex';
+    };
+  </script>
+</body>
+</html>
